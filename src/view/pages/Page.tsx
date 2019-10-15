@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
 
 export const PageContainer = observer((props: PageContainerProps) => {
 	const classes = useStyles(props);
-	console.log(props.model.page.identifier, props.page.identifier);
 	return (
 		<div className={clsx(classes.container, props.model.page.identifier === props.page.identifier && classes.visible)}>
 			<div className={clsx(classes.content, !props.loading && classes.visible)}>

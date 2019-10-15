@@ -38,7 +38,7 @@ const MenuItem = observer((props: MenuItemProps) => {
 	);
 });
 
-export const Menu = (props: MenuProps) => {
+export const Menu = observer((props: MenuProps) => {
 	return (
 		<div>
 			<div>
@@ -48,7 +48,7 @@ export const Menu = (props: MenuProps) => {
 				<MenuItem model={props.model} page={Pages.Playlists}><PlaylistPlayIcon/></MenuItem>
 				<MenuItem model={props.model} page={Pages.Schedules}><ScheduleIcon/></MenuItem>
 				<MenuItem model={props.model} page={Pages.New}>
-					<Badge badgeContent={1} color="secondary">
+					<Badge badgeContent={props.model.pendingRegistrations.length} color="secondary">
 						<AddIcon />
 					</Badge>
 				</MenuItem>
@@ -61,4 +61,4 @@ export const Menu = (props: MenuProps) => {
 			</div>
 		</div>
 	);
-};
+});

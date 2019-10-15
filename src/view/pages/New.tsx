@@ -12,10 +12,8 @@ export interface NewProps extends PageProps {
 export const New = observer((props: NewProps) => {
 	const { model } = props;
 	return (
-		<PageContainer page={Pages.New} model={model} loading={true}>
-			DASHBOARD, WHOA!
-			{model.systemMessage}
-			<Button onClick={() => props.model.systemMessage = "CLICKED!" } variant="contained" color="primary">Log In</Button>
+		<PageContainer page={Pages.New} model={model} loading={model.newLoading}>
+			{JSON.stringify(model.pendingRegistrations)}
 		</PageContainer>
 	)
 });

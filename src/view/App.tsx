@@ -9,11 +9,14 @@ import { makeStyles, withStyles, withTheme, ThemeProvider } from "@material-ui/s
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import { Dashboard } from "./pages/Dashboard";
 import { New } from "./pages/New";
+import { NewController } from "../controllers/NewController";
 
 interface AppProps {
 	model: Model;
 	classes?: Classes;
 }
+
+const drawerWidth = 250;
 
 const styles = (theme: Theme) => {console.log(theme);return({
 	root: {
@@ -21,11 +24,11 @@ const styles = (theme: Theme) => {console.log(theme);return({
 	},
 	drawerPaper: {
 		position: "relative",
-		width: 240,
+		width: drawerWidth,
 	},
 	appBar: {
-		marginLeft: 240,
-		width: "calc(100% - 240px)",
+		marginLeft: drawerWidth,
+		width: `calc(100% - ${drawerWidth}px)`,
 		zIndex: theme.zIndex.drawer + 1,
 	},
 	title: {
@@ -55,6 +58,17 @@ const styles = (theme: Theme) => {console.log(theme);return({
 
 const App = withStyles(styles as any)(observer(
 	class extends React.Component<AppProps> {
+		private newController: NewController;
+		
+		constructor(props: AppProps) {
+			super(props);
+			this.newController = new NewController(props.model);
+		}
+
+		componentWillUnmount() {
+			this.newController.dispose();
+		}
+
 		render() {
 			const { classes, model } = this.props;
 			return (
