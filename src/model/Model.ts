@@ -6,6 +6,6 @@ export class Model {
 	@observable page: PageInfo;
 
 	constructor() {
-		this.page = Pages.Dashboard;
+		this.page = Pages.New;
 	}
 }

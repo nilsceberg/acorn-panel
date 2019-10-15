@@ -8,6 +8,7 @@ import { CssBaseline, Theme, Drawer, AppBar, Typography, Toolbar, Divider, creat
 import { makeStyles, withStyles, withTheme, ThemeProvider } from "@material-ui/styles";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import { Dashboard } from "./pages/Dashboard";
+import { New } from "./pages/New";
 
 interface AppProps {
 	model: Model;
@@ -17,7 +18,6 @@ interface AppProps {
 const styles = (theme: Theme) => {console.log(theme);return({
 	root: {
 		display: "flex",
-		height: "100vh",
 	},
 	drawerPaper: {
 		position: "relative",
@@ -41,6 +41,9 @@ const styles = (theme: Theme) => {console.log(theme);return({
 		transform: "rotate(-20deg)",
 	},
 	main: {
+		height: "100vh",
+		overflow: "auto",
+		flexGrow: 1,
 	},
 	appBarSpacer: theme.mixins.toolbar,
 	content: {
@@ -78,6 +81,7 @@ const App = withStyles(styles as any)(observer(
 						<div className={classes.appBarSpacer}/>
 						<div className={classes.content}>
 							<Dashboard model={model}/>
+							<New model={model}/>
 						</div>
 					</main>
 				</div>
