@@ -1,23 +1,13 @@
 import * as React from "react";
 import { observer } from "mobx-react";
 import { Model } from "../model/Model";
+import { Menu } from "./Menu";
 
 import Button from "@material-ui/core/Button";
 import { CssBaseline, Theme, Drawer, AppBar, Typography, Toolbar, Divider, createMuiTheme, ListSubheader, ListItem, ListItemText, ListItemIcon, Badge } from "@material-ui/core";
 import { makeStyles, withStyles, withTheme, ThemeProvider } from "@material-ui/styles";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
-
-import {
-	Dashboard as DashboardIcon,
-	Settings as SettingsIcon,
-	BarChart as BarChartIcon,
-	PersonalVideo as PersonalVideoIcon,
-	PlaylistPlay as PlaylistPlayIcon,
-	Schedule as ScheduleIcon,
-	Add as AddIcon,
-	People as PeopleIcon,
-} from "@material-ui/icons";
-import { relative } from "path";
+import { Dashboard } from "./pages/Dashboard";
 
 interface AppProps {
 	model: Model;
@@ -27,11 +17,11 @@ interface AppProps {
 const styles = (theme: Theme) => {console.log(theme);return({
 	root: {
 		display: "flex",
+		height: "100vh",
 	},
 	drawerPaper: {
 		position: "relative",
 		width: 240,
-		height: "100vh",
 	},
 	appBar: {
 		marginLeft: 240,
@@ -51,21 +41,26 @@ const styles = (theme: Theme) => {console.log(theme);return({
 		transform: "rotate(-20deg)",
 	},
 	main: {
-		
+	},
+	appBarSpacer: theme.mixins.toolbar,
+	content: {
+		marginLeft: theme.spacing(5),
+		marginRight: theme.spacing(5),
+		marginTop: theme.spacing(4),
 	}
 })}
 
-const App = withStyles(styles)(observer(
+const App = withStyles(styles as any)(observer(
 	class extends React.Component<AppProps> {
 		render() {
-			const { classes } = this.props;
+			const { classes, model } = this.props;
 			return (
 				<div className={classes.root}>
 					<CssBaseline/>
 					<AppBar position="absolute" className={classes.appBar}>
 						<Toolbar>
 							<Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-								Control Panel
+								{model.page.title}
 							</Typography>
 						</Toolbar>
 					</AppBar>
@@ -77,61 +72,13 @@ const App = withStyles(styles)(observer(
 							</Typography>
 						</Toolbar>
 						<Divider/>
-						<div>
-							<ListSubheader inset>Manage</ListSubheader>
-							<ListItem selected button>
-								<ListItemIcon>
-									<DashboardIcon/>
-								</ListItemIcon>
-								<ListItemText primary="Dashboard" />
-							</ListItem>
-							<ListItem button>
-								<ListItemIcon>
-									<PersonalVideoIcon/>
-								</ListItemIcon>
-								<ListItemText primary="Screens" />
-							</ListItem>
-							<ListItem button>
-								<ListItemIcon>
-									<PlaylistPlayIcon/>
-								</ListItemIcon>
-								<ListItemText primary="Playlists" />
-							</ListItem>
-							<ListItem button>
-								<ListItemIcon>
-									<ScheduleIcon/>
-								</ListItemIcon>
-								<ListItemText primary="Schedules" />
-							</ListItem>
-							<ListItem button>
-								<ListItemIcon>
-									<Badge badgeContent={1} color="secondary">
-										<AddIcon/>
-									</Badge>
-								</ListItemIcon>
-								<ListItemText primary="New" />
-							</ListItem>
-						</div>
-						<Divider/>
-						<div>
-							<ListSubheader inset>System</ListSubheader>
-							<ListItem button>
-								<ListItemIcon>
-									<SettingsIcon/>
-								</ListItemIcon>
-								<ListItemText primary="Settings" />
-							</ListItem>
-							<ListItem button>
-								<ListItemIcon>
-									<BarChartIcon/>
-								</ListItemIcon>
-								<ListItemText primary="Diagnostics" />
-							</ListItem>
-						</div>
+						<Menu model={this.props.model}/>
 					</Drawer>
 					<main className={classes.main}>
-						{this.props.model.systemMessage}
-						<Button onClick={() => this.props.model.systemMessage = "CLICKED!" } variant="contained" color="primary">Log In</Button>
+						<div className={classes.appBarSpacer}/>
+						<div className={classes.content}>
+							<Dashboard model={model}/>
+						</div>
 					</main>
 				</div>
 			);
