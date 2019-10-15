@@ -13,9 +13,7 @@ export const Dashboard = observer((props: DashboardProps) => {
 	const { model } = props;
 	return (
 		<PageContainer page={Pages.Dashboard} model={model}>
-			DASHBOARD, WHOA!
-			{model.systemMessage}
-			<Button onClick={() => props.model.systemMessage = "CLICKED!" } variant="contained" color="primary">Log In</Button>
+			Acorn Control Panel
 		</PageContainer>
 	)
 });
