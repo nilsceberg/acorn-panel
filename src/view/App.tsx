@@ -3,8 +3,8 @@ import { observer } from "mobx-react";
 import { Model } from "../model/Model";
 import { Menu } from "./Menu";
 
-import Button from "@material-ui/core/Button";
-import { CssBaseline, Theme, Drawer, AppBar, Typography, Toolbar, Divider, createMuiTheme, ListSubheader, ListItem, ListItemText, ListItemIcon, Badge } from "@material-ui/core";
+import { Refresh as RefreshIcon } from "@material-ui/icons";
+import { CssBaseline, Theme, Drawer, AppBar, Typography, Toolbar, Divider, createMuiTheme, ListSubheader, ListItem, ListItemText, ListItemIcon, Badge, IconButton } from "@material-ui/core";
 import { makeStyles, withStyles, withTheme, ThemeProvider } from "@material-ui/styles";
 import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import { Dashboard } from "./pages/Dashboard";
@@ -18,7 +18,7 @@ interface AppProps {
 
 const drawerWidth = 250;
 
-const styles = (theme: Theme) => {console.log(theme);return({
+const styles = (theme: Theme) => ({
 	root: {
 		display: "flex",
 	},
@@ -54,7 +54,7 @@ const styles = (theme: Theme) => {console.log(theme);return({
 		marginRight: theme.spacing(5),
 		marginTop: theme.spacing(4),
 	}
-})}
+});
 
 const App = withStyles(styles as any)(observer(
 	class extends React.Component<AppProps> {
@@ -76,6 +76,9 @@ const App = withStyles(styles as any)(observer(
 					<CssBaseline/>
 					<AppBar position="absolute" className={classes.appBar}>
 						<Toolbar>
+							<IconButton>
+								<RefreshIcon color="inherit"/>
+							</IconButton>
 							<Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
 								{model.page.title}
 							</Typography>

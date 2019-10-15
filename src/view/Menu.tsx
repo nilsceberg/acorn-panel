@@ -24,12 +24,13 @@ export interface MenuProps {
 interface MenuItemProps {
 	model: Model;
 	page: PageInfo;
+	disabled?: boolean;
 	children: JSX.Element;
 }
 
 const MenuItem = observer((props: MenuItemProps) => {
 	return (
-		<ListItem onClick={() => { props.model.page = props.page }} selected={props.model.page.identifier === props.page.identifier} button>
+		<ListItem disabled={props.disabled} onClick={() => { props.model.page = props.page }} selected={props.model.page.identifier === props.page.identifier} button>
 			<ListItemIcon>
 				{props.children}
 			</ListItemIcon>
@@ -47,7 +48,7 @@ export const Menu = observer((props: MenuProps) => {
 				<MenuItem model={props.model} page={Pages.Screens}><PersonalVideoIcon/></MenuItem>
 				<MenuItem model={props.model} page={Pages.Playlists}><PlaylistPlayIcon/></MenuItem>
 				<MenuItem model={props.model} page={Pages.Schedules}><ScheduleIcon/></MenuItem>
-				<MenuItem model={props.model} page={Pages.New}>
+				<MenuItem model={props.model} page={Pages.New} disabled={props.model.pendingRegistrations.length === 0}>
 					<Badge badgeContent={props.model.pendingRegistrations.length} color="secondary">
 						<AddIcon />
 					</Badge>
