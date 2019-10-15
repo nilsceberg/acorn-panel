@@ -37,7 +37,6 @@ export class NewController {
 		this.observeDisposer = observe(model, "page", async (change) => {
 			if (change.newValue.identifier === Pages.New.identifier && change.newValue.identifier !== change.oldValue.identifier) {
 				model.newLoading = true;
-				await sleep(1000);
 				const pending = await this.getPending();
 				model.pendingRegistrations = pending;
 				model.newLoading = false;
