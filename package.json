@@ -16,6 +16,7 @@
 		"typescript": "^3.6.4"
 	},
 	"dependencies": {
+		"@material-ui/core": "^4.5.1",
 		"graphql": "^14.5.8",
 		"mobx": "^5.14.0",
 		"mobx-react": "^6.1.4",
