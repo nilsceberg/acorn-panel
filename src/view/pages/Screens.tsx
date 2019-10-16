@@ -6,13 +6,14 @@ import { Button, Paper, Table, TableHead, TableRow, TableCell, Checkbox, TableBo
 import { observer } from "mobx-react";
 
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { ScreensController } from "../../controllers/ScreensController";
 
 export interface ScreensProps extends PageProps {
-
+	controller: ScreensController
 }
 
 export const Screens = observer((props: ScreensProps) => {
-	const { model } = props;
+	const { model, controller } = props;
 	return (
 		<PageContainer page={Pages.Screens} model={model} loading={model.screensLoading}>
 			<Paper>
@@ -51,10 +52,13 @@ export const Screens = observer((props: ScreensProps) => {
 											{screen.uuid}
 										</TableCell>
 										<TableCell>
-											<FiberManualRecordIcon htmlColor={"red"}/>
+											{
+												screen.connected !== null ? <FiberManualRecordIcon htmlColor={screen.connected ? "green" : "red"}/> : null
+											}
+											
 										</TableCell>
 										<TableCell>
-											<Checkbox color="primary">Identify</Checkbox>
+											<Checkbox color="primary" checked={screen.identify} onClick={async () => screen.identify = await controller.setIdentify(screen.uuid, !screen.identify)}>Identify</Checkbox>
 										</TableCell>
 									</TableRow>
 								)

@@ -20,6 +20,7 @@ export class ScreensController {
 			if (change.newValue.identifier === Pages.Screens.identifier && change.newValue.identifier !== change.oldValue.identifier) {
 				model.screensLoading = true;
 				const screens = await this.getScreens();
+				console.log(screens);
 				model.screens = screens;
 				model.screensLoading = false;
 			}
@@ -34,15 +35,34 @@ export class ScreensController {
 	private async getScreens(): Promise<any> {
 		const response = await this.client.query({
 			query: gql`
-			query screens {
-				screens {
-					name
-					uuid
+				query screens {
+					screens {
+						name
+						uuid
+						connected
+						identify
+					}
 				}
-			}
-			`
+				`,
+			fetchPolicy: "no-cache",
 		});
 
 		return response.data.screens;
+	}
+
+	public async setIdentify(uuid: string, identify: boolean): Promise<any> {
+		const response = await this.client.mutate({
+			mutation: gql`
+				mutation identify($uuid: String!, $identify: Boolean!) {
+					identify(uuid: $uuid, identify: $identify)
+				}
+				`,
+			fetchPolicy: "no-cache",
+			variables: {
+				uuid, identify
+			}
+		});
+
+		return response.data.identify;
 	}
 }

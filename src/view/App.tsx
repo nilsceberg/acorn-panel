@@ -104,7 +104,7 @@ const App = withStyles(styles as any)(observer(
 						<div className={classes.content}>
 							<Dashboard model={model}/>
 							<New model={model}/>
-							<Screens model={model}/>
+							<Screens controller={this.screensController} model={model}/>
 						</div>
 					</main>
 				</div>
