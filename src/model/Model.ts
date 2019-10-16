@@ -6,8 +6,11 @@ export class Model {
 	@observable systemMessage: string = "";
 	@observable page: PageInfo = Pages.Dashboard;
 
+	@observable screens: any[] = [];
 	@observable pendingRegistrations: any[] = [];
+
 	@observable newLoading = false;
+	@observable screensLoading = false;
 
 	constructor() {
 	}

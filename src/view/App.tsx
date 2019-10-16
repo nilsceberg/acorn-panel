@@ -10,6 +10,8 @@ import { Classes } from "@material-ui/styles/mergeClasses/mergeClasses";
 import { Dashboard } from "./pages/Dashboard";
 import { New } from "./pages/New";
 import { NewController } from "../controllers/NewController";
+import { Screens } from "./pages/Screens";
+import { ScreensController } from "../controllers/ScreensController";
 
 interface AppProps {
 	model: Model;
@@ -59,14 +61,17 @@ const styles = (theme: Theme) => ({
 const App = withStyles(styles as any)(observer(
 	class extends React.Component<AppProps> {
 		private newController: NewController;
+		private screensController: ScreensController;
 		
 		constructor(props: AppProps) {
 			super(props);
 			this.newController = new NewController(props.model);
+			this.screensController = new ScreensController(props.model);
 		}
 
 		componentWillUnmount() {
 			this.newController.dispose();
+			this.screensController.dispose();
 		}
 
 		render() {
@@ -99,6 +104,7 @@ const App = withStyles(styles as any)(observer(
 						<div className={classes.content}>
 							<Dashboard model={model}/>
 							<New model={model}/>
+							<Screens model={model}/>
 						</div>
 					</main>
 				</div>
