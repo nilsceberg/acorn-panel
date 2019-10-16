@@ -72,7 +72,8 @@ export class NewController {
 					uuid
 				}
 			}
-			`
+			`,
+			fetchPolicy: "no-cache"
 		});
 
 		return response.data.pendingRegistrations;
