@@ -22,6 +22,7 @@
 		"apollo-client": "^2.6.4",
 		"clsx": "^1.0.4",
 		"graphql": "^14.5.8",
+		"material-table": "^1.52.0",
 		"mobx": "^5.14.0",
 		"mobx-react": "^6.1.4",
 		"react": "^16.10.2",

@@ -21,7 +21,7 @@ export class ScreensController {
 				model.screensLoading = true;
 				const screens = await this.getScreens();
 				console.log(screens);
-				model.screens = screens;
+				model.rootScreens = screens;
 				model.screensLoading = false;
 			}
 		});
@@ -34,13 +34,25 @@ export class ScreensController {
 
 	private async getScreens(): Promise<any> {
 		const response = await this.client.query({
+			// We recurse to some max depth, and then require a new fetch if we want to load deeper
 			query: gql`
 				query screens {
 					screens {
+						...screen
+						parent {
+							...screen
+						}
+					}
+				}
+
+				fragment screen on Screen {
+					name
+					uuid
+					connected
+					identify
+					group
+					schedule {
 						name
-						uuid
-						connected
-						identify
 					}
 				}
 				`,
@@ -48,6 +60,31 @@ export class ScreensController {
 		});
 
 		return response.data.screens;
+	}
+
+	public async getGroup(screen: string): Promise<any[]> {
+		const response = await this.client.query({
+			query: gql`
+				query group($uuid: ID!) {
+					screen(screen: $uuid) {
+						children {
+							name
+							uuid
+							connected
+							identify
+							group
+							schedule {
+								name
+							}
+						}
+					}
+				}
+			`,
+			variables: { uuid: screen },
+			fetchPolicy: "no-cache"
+		});
+
+		return response.data.screen.children;
 	}
 
 	public async setIdentify(uuid: string, identify: boolean): Promise<any> {
