@@ -14,7 +14,7 @@ export class NewController {
 	constructor(model: Model) {
 		this.model = model;
 		this.client = new ApolloClient({
-			uri: "http://localhost:8080/api"
+			uri: AcornConfig.api
 		});
 
 		// See dispose method for caveats.

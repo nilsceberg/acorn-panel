@@ -13,7 +13,7 @@ export class ScreensController {
 	constructor(model: Model) {
 		this.model = model;
 		this.client = new ApolloClient({
-			uri: "http://localhost:8080/api"
+			uri: AcornConfig.api
 		});
 
 		this.observeDisposer = observe(model, "page", async (change) => {
