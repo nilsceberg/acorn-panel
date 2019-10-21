@@ -6,7 +6,6 @@ import { Button, Paper, Table, TableHead, TableRow, TableCell, Checkbox, TableBo
 import { observer } from "mobx-react";
 import MaterialTable from "material-table";
 
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import { ScreensController } from "../../controllers/ScreensController";
 import { ScreenDetails } from "./ScreenDetails";
 

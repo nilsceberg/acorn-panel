@@ -12,6 +12,8 @@ import { New } from "./pages/New";
 import { NewController } from "../controllers/NewController";
 import { Screens } from "./pages/Screens";
 import { ScreensController } from "../controllers/ScreensController";
+import { PlaylistsController } from "../controllers/PlaylistsController";
+import { Playlists } from "./pages/Playlists";
 
 interface AppProps {
 	model: Model;
@@ -62,16 +64,19 @@ const App = withStyles(styles as any)(observer(
 	class extends React.Component<AppProps> {
 		private newController: NewController;
 		private screensController: ScreensController;
+		private playlistsController: PlaylistsController;
 		
 		constructor(props: AppProps) {
 			super(props);
 			this.newController = new NewController(props.model);
 			this.screensController = new ScreensController(props.model);
+			this.playlistsController = new PlaylistsController(props.model);
 		}
 
 		componentWillUnmount() {
 			this.newController.dispose();
 			this.screensController.dispose();
+			this.playlistsController.dispose();
 		}
 
 		render() {
@@ -105,6 +110,7 @@ const App = withStyles(styles as any)(observer(
 							<Dashboard model={model}/>
 							<New model={model}/>
 							<Screens controller={this.screensController} model={model}/>
+							<Playlists controller={this.playlistsController} model={model}/>
 						</div>
 					</main>
 				</div>

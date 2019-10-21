@@ -62,31 +62,6 @@ export class ScreensController {
 		return response.data.screens;
 	}
 
-	public async getGroup(screen: string): Promise<any[]> {
-		const response = await this.client.query({
-			query: gql`
-				query group($uuid: ID!) {
-					screen(screen: $uuid) {
-						children {
-							name
-							uuid
-							connected
-							identify
-							group
-							schedule {
-								name
-							}
-						}
-					}
-				}
-			`,
-			variables: { uuid: screen },
-			fetchPolicy: "no-cache"
-		});
-
-		return response.data.screen.children;
-	}
-
 	public async setIdentify(uuid: string, identify: boolean): Promise<any> {
 		const response = await this.client.mutate({
 			mutation: gql`
