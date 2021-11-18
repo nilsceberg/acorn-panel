@@ -9,10 +9,12 @@ export class Model {
 	@observable rootScreens: any[] = [];
 	@observable pendingRegistrations: any[] = [];
 	@observable playlists: any[] = [];
+	@observable schedules: any[] = [];
 
 	@observable newLoading = false;
 	@observable screensLoading = false;
 	@observable playlistsLoading = false;
+	@observable schedulesLoading = false;
 	@observable playlistLoading: { [uuid: string]: boolean } = {};
 
 	constructor() {

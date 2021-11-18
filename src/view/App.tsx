@@ -14,6 +14,8 @@ import { Screens } from "./pages/Screens";
 import { ScreensController } from "../controllers/ScreensController";
 import { PlaylistsController } from "../controllers/PlaylistsController";
 import { Playlists } from "./pages/Playlists";
+import { Schedules } from "./pages/Schedules";
+import { SchedulesController } from "../controllers/SchedulesController";
 
 interface AppProps {
 	model: Model;
@@ -65,17 +67,20 @@ const App = withStyles(styles as any)(observer(
 		private newController: NewController;
 		private screensController: ScreensController;
 		private playlistsController: PlaylistsController;
+		private schedulesController: SchedulesController;
 		
 		constructor(props: AppProps) {
 			super(props);
 			this.newController = new NewController(props.model);
 			this.screensController = new ScreensController(props.model);
 			this.playlistsController = new PlaylistsController(props.model);
+			this.schedulesController = new SchedulesController(props.model);
 		}
 
 		componentWillUnmount() {
 			this.newController.dispose();
 			this.screensController.dispose();
+			this.playlistsController.dispose();
 			this.playlistsController.dispose();
 		}
 
@@ -111,6 +116,7 @@ const App = withStyles(styles as any)(observer(
 							<New model={model}/>
 							<Screens controller={this.screensController} model={model}/>
 							<Playlists controller={this.playlistsController} model={model}/>
+							<Schedules controller={this.schedulesController} model={model}/>
 						</div>
 					</main>
 				</div>
