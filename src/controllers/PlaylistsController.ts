@@ -11,6 +11,12 @@ fragment Playlist on Playlist {
 	items {
 		name
 		type
+		settings {
+			... on WebsiteSettings {
+				url
+				duration
+			}
+		}
 	}
 }
 `;
@@ -65,6 +71,31 @@ export class PlaylistsController {
 		Object.assign(
 			this.model.playlists.find(p => p.uuid === playlist.uuid),
 			this.processPlaylist(response.data.renamePlaylistItem));
+		//this.model.playlistsLoading = false;
+	}
+
+	public async addPlaylistItem(playlist: any, item: any) {
+		//this.model.playlistsLoading = true;
+		const response = await this.client.mutate({
+			mutation: gql`
+			mutation addWebsiteItem($playlist: ID!, $name: String!, $settings: WebsiteSettingsInput!) {
+				addPlaylistWebsiteItem(playlist: $playlist, name: $name, settings: $settings) {
+					...Playlist
+				}
+			}
+			${fragments}
+			`,
+			variables: {
+				playlist: playlist.uuid,
+				name: item.name,
+				settings: Object.assign(item.settings, { duration: Number.parseInt(item.settings.duration) }),
+			},
+			fetchPolicy: "no-cache",
+		});
+
+		Object.assign(
+			this.model.playlists.find(p => p.uuid === playlist.uuid),
+			this.processPlaylist(response.data.addPlaylistWebsiteItem));
 		//this.model.playlistsLoading = false;
 	}
 

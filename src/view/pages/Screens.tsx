@@ -15,35 +15,46 @@ export interface ScreensProps extends PageProps {
 
 export const Screens = observer((props: ScreensProps) => {
 	const { model, controller } = props;
-	const Identify = observer((props: { screen: any }) => <Checkbox color="primary" checked={props.screen.identify} onClick={async () => props.screen.identify = await controller.setIdentify(props.screen.uuid, !props.screen.identify)}/>);
+	const Identify = observer((props: { screen: any }) => <Checkbox size="small" color="primary" checked={props.screen.identify} onClick={async () => props.screen.identify = await controller.setIdentify(props.screen.uuid, !props.screen.identify)}/>);
 	return (
 		<PageContainer page={Pages.Screens} model={model} loading={model.screensLoading}>
 			<MaterialTable
-				options={{ selection: true }}
+				options={{
+					selection: false,
+					actionsColumnIndex: -1,
+				}}
+				editable={{
+					isEditable: () => true,
+					onRowUpdate: async () => {},
+				}}
 				parentChildData={(row, rows) => row.parent ? rows.find(p => p.uuid === row.parent.uuid) : undefined}
-				detailPanel={[{
-					render: screen => <ScreenDetails screen={screen}/>
-				}]}
 				columns={[
 					{
 						title: "Name",
 						field: "name",
 						type: "string",
+						editable: "always",
 					},
 					{
 						title: "Schedule",
 						field: "schedule.name",
 						type: "string",
+						editable: "always",
 					},
 					{
 						title: "Connected",
 						field: "connected",
-						type: "boolean"
+						type: "boolean",
+						editable: "never",
 					},
 					{
 						title: "Identify",
 						field: "identify",
 						type: "boolean",
+						editable: "never",
+						cellStyle: {
+							padding: 0,
+						},
 						render: screen => <Identify screen={screen}/>
 					},
 				]}

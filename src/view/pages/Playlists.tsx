@@ -6,7 +6,7 @@ import { Button, Paper, Table, TableHead, TableRow, TableCell, Checkbox, TableBo
 import { observer } from "mobx-react";
 import MaterialTable from "material-table";
 
-import { ExpandLess as IconUp, ExpandMore as IconDown } from "@material-ui/icons";
+import { ExpandLess as IconUp, ExpandMore as IconDown, Language as WebIcon, Help as QuestionIcon } from "@material-ui/icons";
 
 import { PlaylistsController } from "../../controllers/PlaylistsController";
 import { makeStyles } from "@material-ui/styles";
@@ -39,22 +39,29 @@ export const Playlist = withStyles(playlistStyles)(observer((props: { playlist: 
 				editable={{
 					isEditable: playlist => true,
 					onRowUpdate: async (oldData, newData) => {
-						await controller.editPlaylistItem(playlist, oldData, newData)
-					}
+						await controller.editPlaylistItem(playlist, oldData, newData);
+					},
+					onRowAdd: async (data) => {
+						await controller.addPlaylistItem(playlist, data);
+					},
 				}}
 				isLoading={model.playlistLoading[playlist.uuid]}
 				columns={[
 					{
-						title: "Index",
 						field: "index",
 						editable: "never",
 						type: "string",
-							render: item => (
-							<div>
-								<IconButton disabled={item.index === 0} onClick={() => controller.movePlaylistItem(playlist, item, -1)}><IconUp/></IconButton>
-								<IconButton disabled={item.index === playlist.items.length - 1} onClick={() => controller.movePlaylistItem(playlist, item, 1)}><IconDown/></IconButton>
-							</div>
-						)
+						render: item => {
+							if (item === undefined) {
+								return <div/>;
+							}
+							return (
+								<div>
+									<IconButton style={{padding:0}} disabled={item.index === 0} onClick={() => controller.movePlaylistItem(playlist, item, -1)}><IconUp/></IconButton>
+									<IconButton style={{padding:0}} disabled={item.index === playlist.items.length - 1} onClick={() => controller.movePlaylistItem(playlist, item, 1)}><IconDown/></IconButton>
+								</div>
+							);
+						}
 					},
 					{
 						title: "Name",
@@ -66,10 +73,24 @@ export const Playlist = withStyles(playlistStyles)(observer((props: { playlist: 
 						field: "type",
 						type: "string",
 						editable: "never",
+						render: item => (
+							(item && item.type === "WEBSITE") ? <WebIcon titleAccess="Website"/> : <QuestionIcon/>
+						)
+					},
+					{
+						title: "URL",
+						field: "settings.url",
+						type: "string",
+					},
+					{
+						title: "Duration",
+						field: "settings.duration",
+						type: "numeric",
+						render: value => value ? <span>{(value as any).settings.duration} second{(value as any).settings.duration === 1 ? "" : "s"}</span> : <span/>,
 					},
 				]}
-				title={"Items"}
-				data={playlist.items}
+			title={<span><span style={{color: "gray"}}>Playlist:</span> <span>{playlist.name}</span></span>}
+			data={playlist.items}
 			/>
 		</div>
 	)
