@@ -44,6 +44,9 @@ export const Playlist = withStyles(playlistStyles)(observer((props: { playlist: 
 					onRowAdd: async (data) => {
 						await controller.addPlaylistItem(playlist, data);
 					},
+					onRowDelete: async (data) => {
+						await controller.deletePlaylistItem(playlist, data)
+					},
 				}}
 				isLoading={model.playlistLoading[playlist.uuid]}
 				columns={[

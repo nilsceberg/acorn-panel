@@ -99,6 +99,31 @@ export class PlaylistsController {
 		//this.model.playlistsLoading = false;
 	}
 
+	public async deletePlaylistItem(playlist: any, item: any) {
+		this.model.playlistLoading[playlist.uuid] = true;
+
+		const response = await this.client.mutate({
+			mutation: gql`
+			mutation ($playlist: ID!, $index: Int!) {
+				deletePlaylistItem(playlist: $playlist, index: $index) {
+					...Playlist
+				}
+			}
+			${fragments}
+			`,
+			variables: {
+				playlist: playlist.uuid,
+				index: item.index,
+			},
+			fetchPolicy: "no-cache",
+		});
+
+		Object.assign(
+			this.model.playlists.find(p => p.uuid === playlist.uuid),
+			this.processPlaylist(response.data.deletePlaylistItem));
+		this.model.playlistLoading[playlist.uuid] = false;
+	}
+
 	public async movePlaylistItem(playlist: any, item: any, direction: 1 | -1) {
 		this.model.playlistLoading[playlist.uuid] = true;
 		const response = await this.client.mutate({
