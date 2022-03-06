@@ -62,16 +62,17 @@ export class ScreensController {
 		return response.data.screens;
 	}
 
-	public async setIdentify(uuid: string, identify: boolean): Promise<any> {
+	public async setIdentify(screen: string, identify: boolean): Promise<any> {
 		const response = await this.client.mutate({
 			mutation: gql`
-				mutation identify($uuid: String!, $identify: Boolean!) {
-					identify(uuid: $uuid, identify: $identify)
+				mutation identify($screen: ID!, $identify: Boolean!) {
+					identify(screen: $screen, identify: $identify)
 				}
 				`,
 			fetchPolicy: "no-cache",
 			variables: {
-				uuid, identify
+				screen,
+				identify,
 			}
 		});
 

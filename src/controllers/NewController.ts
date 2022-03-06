@@ -7,6 +7,7 @@ import { sleep } from "../util/async";
 export class NewController {
 	private client: ApolloClient<any>;
 	private model: Model;
+	private refreshing: boolean = false;
 
 	private observeDisposer: Lambda;
 	private refreshTimeout: any = true;
@@ -20,12 +21,7 @@ export class NewController {
 		// See dispose method for caveats.
 		const refreshPending = async () => {
 			this.refreshTimeout = true;
-			if (this.model.page.identifier !== Pages.New.identifier) {
-				const pending = await this.getPending();
-				if (this.model.page.identifier !== Pages.New.identifier) {
-					this.model.pendingRegistrations = pending;
-				}
-			}
+			this.refresh(false);
 
 			if (this.refreshTimeout) {
 				this.refreshTimeout = setTimeout(refreshPending, 2000);
@@ -36,12 +32,23 @@ export class NewController {
 
 		this.observeDisposer = observe(model, "page", async (change) => {
 			if (change.newValue.identifier === Pages.New.identifier && change.newValue.identifier !== change.oldValue.identifier) {
-				model.newLoading = true;
-				const pending = await this.getPending();
-				model.pendingRegistrations = pending;
-				model.newLoading = false;
+				await this.refresh();
 			}
 		});
+	}
+
+	public async refresh(showLoading: boolean = true) {
+		this.model.newLoading = this.model.newLoading || showLoading;
+
+		if (this.refreshing) {
+			return;
+		}
+
+		const pending = await this.getPending();
+
+		this.model.pendingRegistrations = pending;
+		this.model.newLoading = false;
+		this.refreshing = false;
 	}
 
 	public dispose() {
@@ -77,5 +84,24 @@ export class NewController {
 		});
 
 		return response.data.pendingRegistrations;
+	}
+
+	public async acceptNew(screen: string, name: string): Promise<any> {
+		const response = await this.client.mutate({
+			mutation: gql`
+				mutation acceptNew($screen: ID!, $name: String!) {
+					acceptNew(screen: $screen, name: $name) {
+						name
+					}
+				}
+			`,
+			fetchPolicy: "no-cache",
+			variables: {
+				screen,
+				name,
+			}
+		});
+
+		return response.data.acceptNew;
 	}
 }

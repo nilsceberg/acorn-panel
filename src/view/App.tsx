@@ -113,7 +113,7 @@ const App = withStyles(styles as any)(observer(
 						<div className={classes.appBarSpacer}/>
 						<div className={classes.content}>
 							<Dashboard model={model}/>
-							<New model={model}/>
+							<New controller={this.newController} model={model}/>
 							<Screens controller={this.screensController} model={model}/>
 							<Playlists controller={this.playlistsController} model={model}/>
 							<Schedules controller={this.schedulesController} model={model}/>

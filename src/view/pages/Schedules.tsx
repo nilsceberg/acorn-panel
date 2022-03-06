@@ -23,17 +23,28 @@ export const Schedules = observer((props: SchedulesProps) => {
 		<PageContainer page={Pages.Schedules} model={model} loading={false}>
 			<MaterialTable
 				isLoading={model.schedulesLoading}
-				options={{ selection: true }}
+				options={{
+					selection: false,
+					actionsColumnIndex: -1,
+				}}
+				editable={{
+					isEditable: schedule => true,
+					onRowUpdate: async (oldData, newData) => {
+						//await controller.editPlaylistItem(playlist, oldData, newData);
+					},
+				}}
 				columns={[
 					{
 						title: "Name",
 						field: "name",
 						type: "string",
+						editable: "always",
 					},
 					{
 						title: "Playlist",
-						field: "playlist.name",
-						type: "string",
+						field: "playlist.uuid",
+						editable: "always",
+						lookup: controller.playlistNames(),
 					},
 				]}
 				title="Schedules"

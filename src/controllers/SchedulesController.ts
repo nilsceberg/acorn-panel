@@ -1,7 +1,7 @@
 import ApolloClient, { gql } from "apollo-boost";
 import { Model } from "../model/Model";
 import { Pages } from "../model/Pages";
-import { autorun, observe, Lambda } from "mobx";
+import { autorun, observe, Lambda, computed } from "mobx";
 import { sleep } from "../util/async";
 
 const fragments = gql`
@@ -38,6 +38,14 @@ export class SchedulesController {
 		});
 	}
 
+	//@computed
+	public playlistNames(): { [uuid: string]: string } {
+		const mapping: { [uuid: string]: string } = {};
+		this.model.playlists.forEach(playlist => mapping[playlist.uuid] = playlist.name);
+		console.log("mapping", mapping);
+		return mapping;
+	}
+
 	public dispose() {
 		this.observeDisposer();
 		console.log("Disposed.");
@@ -45,7 +53,6 @@ export class SchedulesController {
 
 	private async getSchedules(): Promise<any> {
 		const response = await this.client.query({
-			// We recurse to some max depth, and then require a new fetch if we want to load deeper
 			query: gql`
 				query schedules {
 					schedules {

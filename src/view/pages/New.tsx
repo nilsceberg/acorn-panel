@@ -4,13 +4,21 @@ import { PageProps, PageContainer } from "./Page";
 import { Pages } from "../../model/Pages";
 import { Button, Paper, Table, TableHead, TableRow, TableCell, Checkbox, TableBody } from "@material-ui/core";
 import { observer } from "mobx-react";
+import { NewController } from "../../controllers/NewController";
 
 export interface NewProps extends PageProps {
-
+	controller: NewController;
 }
 
 export const New = observer((props: NewProps) => {
-	const { model } = props;
+	const { model, controller } = props;
+
+	const acceptNew = async (pending: any) => {
+		// TODO: allow specifying custom name
+		await controller.acceptNew(pending.uuid, pending.hostname);
+		await controller.refresh(false);
+	};
+
 	return (
 		<PageContainer page={Pages.New} model={model} loading={model.newLoading}>
 			<Paper>
@@ -58,8 +66,8 @@ export const New = observer((props: NewProps) => {
 											{pending.uuid}
 										</TableCell>
 										<TableCell>
-											<Button color="primary">Accept</Button>
-											<Button color="secondary">Reject</Button>
+											<Button color="primary" onClick={() => acceptNew(pending)}>Accept</Button>
+											<Button color="secondary" disabled>Reject</Button>
 										</TableCell>
 									</TableRow>
 								)
